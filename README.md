@@ -4,6 +4,7 @@ Textures Randomizer for Minecraft. Works exactly the way you think it does.
 So how does it work then?
 
 First, you have to have Python 3 or higher.
+If you don't have it, get it here : https://www.python.org/downloads/
 
 Then, you just have to download the pack.mcmeta and the rand.py file and put them in the same folder of a textures folder.
 
