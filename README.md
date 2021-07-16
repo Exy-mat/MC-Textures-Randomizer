@@ -1,7 +1,7 @@
 # MC-Textures-Randomizer
-Textures Randomizer for Minecraft. Works exactly the way you think it does.
+Textures Randomizer for Minecraft. Does exactly what you think it does.
 
-So how does it work then?
+So how does it work ?
 
 First, you have to have Python 3 or higher.
 If you don't have it, get it here : https://www.python.org/downloads/
