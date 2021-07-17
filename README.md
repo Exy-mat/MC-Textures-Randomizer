@@ -9,7 +9,7 @@ If you don't have it, get it here : https://www.python.org/downloads/
 Then, you just have to download the zip and extract everything in the same folder.
 After, just extract and drag the desired textures folder (blocks, items...) from the desired Minecraft version (how to here : https://gaming.stackexchange.com/a/215530) and put them in the textures folder of the randomizer.
 
-Do not forget to edit the version in the pack.mcmeta so Miencraft can use the ressource pack at the end (versions can be found here : https://minecraft.fandom.com/wiki/Tutorials/Creating_a_resource_pack)
+Do not forget to edit the version in the pack.mcmeta so Minecraft can use the ressource pack at the end (versions can be found here : https://minecraft.fandom.com/wiki/Tutorials/Creating_a_resource_pack)
 
 Next, just click and run rand.py and let the magic happen.
 You will be able to find the newly created ressource pack in the new_ressources folder.
