@@ -45,14 +45,11 @@ def main():
                 if entry.name in blacklist_list:
                     blacklist_skip = shutil.copy(basepath + "\\" + entry.name, new_directory + "\\" + entry.name)
                     continue
-                if entry.name.endswith(Blacklisted_file_type) in Blacklisted_file_type:
+                if entry.name.endswith(".mcmeta"):
+                    blacklist_ends = shutil.copy(basepath + "\\" + entry.name, new_directory + "\\" + entry.name)
                     continue
                 else:
                     textures_list.append(entry.name)
-    
-    print(blacklist_list)
-
-    print(textures_list)
     
     # Shuffle the textures in a new list
     new_textures_list = textures_list.copy()
