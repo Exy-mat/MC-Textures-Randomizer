@@ -12,7 +12,7 @@ After, just extract and drag the desired textures folder (blocks, items...) from
 You can have multiple textures subfolder (e.g: textures\blocks, textures\blocks(1), textures\items32x32, ...)
 
 Finally, just click and run TextureRandomizer.py and let the magic happen.
-You will be able to find the newly created ressource pack in the new_ressources folder.
+You will be able to find the newly created resource pack in the new_resources folder.
 You can always look into the TexturesRandomizer.py and add textures to the blacklist section in the code.
 
 I may or may not have future plans with this. Use at your own risk (jk jk, what could really happen with minecraft textures... right?)
