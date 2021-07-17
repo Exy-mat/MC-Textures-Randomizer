@@ -25,7 +25,7 @@ def main():
             print("The subfolder doesn't exist or you have mistyped the number.")
     
     # Creates a list of all the textures in the specified textures folder, without the blacklisted ones.
-    block_textures_list = []
+    textures_list = []
     with os.scandir(basepath) as entries:
         for entry in entries:
             if entry.is_file():
@@ -34,28 +34,28 @@ def main():
                 if entry.name.endswith(Blacklisted_file_type) == True:
                     pass
                 else:
-                    block_textures_list.append(entry.name)
+                    textures_list.append(entry.name)
                     
-    # Generates a new random name for the ressource pack
-    new_pack_name = "ressource_pack_" + str(random.randint(1,1000000))
+    # Generates a new random name for the resource pack
+    new_pack_name = "resource_pack_" + str(random.randint(1,1000000))
                     
     # Shuffle the textures in a new list
-    new_block_textures_list = block_textures_list.copy()
+    new_textures_list = textures_list.copy()
     random.shuffle(new_block_textures_list)
 
-    # Creates the new ressource pack directory
-    dirName = "new_ressources\\" + new_pack_name + "\\assets\\minecraft\\textures\\block"
+    # Creates the new resource pack directory
+    dirName = "new_resources\\" + new_pack_name + "\\assets\\minecraft\\textures\\block"
     os.makedirs(dirName)
 
-    # Creates the new ressources pack by associting the blocks to their new textures
+    # Creates the new resources pack by associting the blocks to their new textures
     for old,new in zip(block_textures_list,new_block_textures_list):
         new_textures = shutil.copy(basepath+"\\"+old, dirName+"\\"+new)
     
-    # Selector for the version of the ressource pack, for the pack.mcmeta
+    # Selector for the version of the resource pack, for the pack.mcmeta
     while True:
         try:
             pack_version = int(input(
-                "Please select the version of the ressource pack (1-7):\n"
+                "Please select the version of the resource pack (1-7):\n"
                 "Minecraft 1.6.1 - 1.8.9: [1]\n"
                 "Minecraft 1.9 - 1.10.2: [2]\n"
                 "Minecraft 1.11 - 1.12.2 : [3]\n"
@@ -66,15 +66,15 @@ def main():
             ))
             break
         except ValueError:
-            print("Please use a number to select the ressource pack version.")
+            print("Please use a number to select the resource pack version.")
     
-    pack_path = "new_ressources\\"+ new_pack_name
+    pack_path = "new_resources\\"+ new_pack_name
     pack_name = "pack.mcmeta"
     completePath = os.path.join(pack_path,pack_name)
     pack_format = {
         "pack": {
         "pack_format": pack_version,
-        "description": "Randomly generated ressource pack"
+        "description": "Randomly generated resource pack"
         }
     }
 
@@ -82,7 +82,7 @@ def main():
         json.dump(pack_format, pack_create, indent=2)
     
     # Ending
-    print("Done , you can find your new ressource pack : "+new_pack_name)
+    print("Done, you can find your new resource pack : "+new_pack_name)
     os.system('pause')
 
 if __name__ == "__main__":
