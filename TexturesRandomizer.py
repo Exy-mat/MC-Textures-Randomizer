@@ -2,7 +2,7 @@ import os, random, shutil, json
 
 def main():
     # Blacklist for the file types.
-    Blacklisted_file_type = ".mcmeta"
+    Blacklisted_file_type = [".mcmeta",".jpeg",".jpg",'.gif']
 
     # Blacklist for the textures. Add texture to the blacklist in blacklist.txt.
     blacklist_file = open("blacklist.txt", "r")
@@ -45,7 +45,7 @@ def main():
                 if entry.name in blacklist_list:
                     blacklist_skip = shutil.copy(basepath + "\\" + entry.name, new_directory + "\\" + entry.name)
                     continue
-                if entry.name.endswith(Blacklisted_file_type) == True:
+                if entry.name.endswith(Blacklisted_file_type) in Blacklisted_file_type:
                     continue
                 else:
                     textures_list.append(entry.name)
