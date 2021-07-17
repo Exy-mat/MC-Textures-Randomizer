@@ -80,6 +80,10 @@ def main():
 
     with open(completePath, "w") as pack_create:
         json.dump(pack_format, pack_create, indent=2)
+    
+    # Ending
+    print("Done , you can find your new ressource pack : "+new_pack_name)
+    os.system('pause')
 
 if __name__ == "__main__":
     main()
