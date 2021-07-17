@@ -8,7 +8,7 @@ def main():
     Blacklisted_blocks_textures = ["campfire_fire.png","fire_0.png","fire_1.png","kelp.png","kelp_plant.png"]
     Blacklisted_items_textures = []
     
-    #Selector for the subfolder of the textures to be randomized.
+    # Selector for the subfolder of the textures to be randomized.
     str_sub = ""
     subfolders = [f.path for f in os.scandir("textures\\") if f.is_dir()]
     for i in range(len(subfolders)):
