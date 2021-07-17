@@ -6,10 +6,10 @@ So how does it work ?
 First, you have to have Python 3 or higher.
 If you don't have it, get it here : https://www.python.org/downloads/
 
-Then, you just have to download the whole thing and put them in the same folder.
-Just extract and drag the blocks textures from the desired Minecraft version (how to here : https://gaming.stackexchange.com/a/215530) and put them in the textures/blocks/ folder of the randomizer.
+Then, you just have to download the zip and extract everything in the same folder.
+Then, just extract and drag the desired textures folder (blocks, items...) from the desired Minecraft version (how to here : https://gaming.stackexchange.com/a/215530) and put them in the textures folder of the randomizer.
 
-Do not forget to edit the pack.mcmeta for it to work with the Minecraft version you want to use it for (versions can be found here : https://minecraft.fandom.com/wiki/Tutorials/Creating_a_resource_pack)
+Do not forget to edit the version in the pack.mcmeta so Miencraft can use the ressource pack at the end (versions can be found here : https://minecraft.fandom.com/wiki/Tutorials/Creating_a_resource_pack)
 
 Next, just click and run rand.py and let the magic happen.
 You will be able to find the newly created ressource pack in the new_ressources folder.
