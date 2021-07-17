@@ -11,8 +11,6 @@ After, just extract and drag the desired textures folder (blocks, items...) from
 
 You can have multiple textures subfolder (e.g: textures\blocks, textures\blocks(1), textures\items32x32, ...)
 
-Do not forget to edit the version in the pack.mcmeta so Minecraft can use the ressource pack at the end (versions can be found here : https://minecraft.fandom.com/wiki/Tutorials/Creating_a_resource_pack)
-
 Finally, just click and run TextureRandomizer.py and let the magic happen.
 You will be able to find the newly created ressource pack in the new_ressources folder.
 You can always look into the rand.py and add textures to the blacklist section in the code.
