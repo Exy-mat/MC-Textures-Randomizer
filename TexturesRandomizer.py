@@ -73,7 +73,7 @@ def main():
     completePath = os.path.join(pack_path,pack_name)
     pack_format = {
         "pack": {
-        "pack_format": str(pack_version),
+        "pack_format": pack_version,
         "description": "Randomly generated ressource pack"
         }
     }
