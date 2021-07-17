@@ -12,11 +12,11 @@ def main():
     str_sub = ""
     subfolders = [f.path for f in os.scandir("textures\\") if f.is_dir()]
     for i in range(len(subfolders)):
-        str_sub = str_sub + str(subfolders[i]) + "[" + str(i) + "] "
+        str_sub = str_sub + subfolders[i] + "[" + str(i) + "] "
     
     while True:
         try:
-            select_sub = int(input("Select the number of the texture subfolder you want to use (max "+ str(len(subfolders)-1) + "): " + str_sub+"\n"))
+            select_sub = int(input("Select the number of the texture subfolder you want to use (max "+ str(len(subfolders)-1) + "): " + str_sub +"\n"))
             basepath = subfolders[select_sub]
             break
         except ValueError:
@@ -39,7 +39,7 @@ def main():
                     textures_list.append(entry.name)
                     
     # Generates a new random name for the ressource pack
-    new_pack_name = "resources_pack_" + str(random.randint(1,1000000))
+    new_pack_name = "resource_pack_" + str(random.randint(1,1000000))
                     
     # Shuffle the textures in a new list
     new_textures_list = textures_list.copy()
@@ -70,13 +70,20 @@ def main():
         except ValueError:
             print("Please use a number to select the resource pack version.")
     
+    # Adds the selected pack.mcmeta and the cool kid description
+    description_text = "This is a randomly generated resource pack"
+    random_description_text = ""
+    hex_char = [1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f"]
+    for i in range(len(description_text)):
+        random_description_text += "\u00A7"+ str(random.choice(hex_char)) + description_text[i] + "\u00A7r"
+                                                       
     pack_path = "new_resources\\"+ new_pack_name
     pack_name = "pack.mcmeta"
     completePath = os.path.join(pack_path,pack_name)
     pack_format = {
         "pack": {
         "pack_format": pack_version,
-        "description": "Randomly generated resource pack"
+        "description": random_description_text,
         }
     }
 
@@ -84,7 +91,7 @@ def main():
         json.dump(pack_format, pack_create, indent=2)
     
     # Ending
-    print("Done, you can find your new resource pack : "+new_pack_name)
+    print("Done, you can find your new resource pack : " + new_pack_name)
     os.system('pause')
 
 if __name__ == "__main__":
