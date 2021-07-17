@@ -4,11 +4,11 @@ def main():
     # Blacklist for the file types.
     Blacklisted_file_type = ".mcmeta"
 
-    # Blacklist for the textures. Format : "texture_name.png". Commas in between textures.
+    # Blacklist for the textures. Format : "block_texture_name.png". Commas in between block textures.
     Blacklisted_blocks_textures = ["campfire_fire.png","fire_0.png","fire_1.png","kelp.png","kelp_plant.png"]
     Blacklisted_items_textures = []
     
-    # Selector for the subfolder of the textures to be randomized.
+    #Selector for the subfolder of the textures to be randomized.
     str_sub = ""
     subfolders = [f.path for f in os.scandir("textures\\") if f.is_dir()]
     for i in range(len(subfolders)):
@@ -19,10 +19,10 @@ def main():
             select_sub = int(input("Select the number of the texture subfolder you want to use (max "+ str(len(subfolders)-1) + "): " + str_sub+"\n"))
             basepath = subfolders[select_sub]
             break
-        except ValueError: # If user doesn't use a number
+        except ValueError:
             print("Please use a number to select the wanted subfolder.")
-        except IndexError: # If user uses a bigger number than possible or a negative number
-            print("The subfolder doesn't exist or you have mistyped the number.")
+        except IndexError:
+            print("The subfolder doesn't exist or you have mistyped the number.")          
     
     # Creates a list of all the textures in the specified textures folder, without the blacklisted ones.
     textures_list = []
@@ -31,31 +31,33 @@ def main():
             if entry.is_file():
                 if entry.name in Blacklisted_blocks_textures:
                     pass
+                if entry.name in Blacklisted_items_textures:
+                    pass
                 if entry.name.endswith(Blacklisted_file_type) == True:
                     pass
                 else:
                     textures_list.append(entry.name)
                     
-    # Generates a new random name for the resource pack
-    new_pack_name = "resource_pack_" + str(random.randint(1,1000000))
+    # Generates a new random name for the ressource pack
+    new_pack_name = "resources_pack_" + str(random.randint(1,1000000))
                     
     # Shuffle the textures in a new list
     new_textures_list = textures_list.copy()
-    random.shuffle(new_block_textures_list)
+    random.shuffle(new_textures_list)
 
     # Creates the new resource pack directory
     dirName = "new_resources\\" + new_pack_name + "\\assets\\minecraft\\textures\\block"
     os.makedirs(dirName)
 
-    # Creates the new resources pack by associting the blocks to their new textures
-    for old,new in zip(block_textures_list,new_block_textures_list):
+    # Creates the new resource pack by associting the blocks to their new textures
+    for old,new in zip(textures_list,new_textures_list):
         new_textures = shutil.copy(basepath+"\\"+old, dirName+"\\"+new)
     
     # Selector for the version of the resource pack, for the pack.mcmeta
     while True:
         try:
             pack_version = int(input(
-                "Please select the version of the resource pack (1-7):\n"
+                "Please select the version of the ressource pack (1-7):\n"
                 "Minecraft 1.6.1 - 1.8.9: [1]\n"
                 "Minecraft 1.9 - 1.10.2: [2]\n"
                 "Minecraft 1.11 - 1.12.2 : [3]\n"
