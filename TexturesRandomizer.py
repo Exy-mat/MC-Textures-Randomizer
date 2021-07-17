@@ -4,10 +4,16 @@ def main():
     # Blacklist for the file types.
     Blacklisted_file_type = ".mcmeta"
 
-    # Blacklist for the textures. Format : "block_texture_name.png". Commas in between block textures.
-    Blacklisted_blocks_textures = ["campfire_fire.png","fire_0.png","fire_1.png","kelp.png","kelp_plant.png"]
-    Blacklisted_items_textures = []
+    # Blacklist for the textures. Add texture to the blacklist in blacklist.txt.
+    blacklist_file = open("blacklist.txt", "r")
+    blacklist_list = []
     
+    for line in blacklist_file:
+        stripped_line = line.strip()
+        blacklist_list.append(stripped_line)
+
+    blacklist_file.close()
+
     # Selector for the subfolder of the textures to be randomized.
     str_sub = ""
     subfolders = [f.path for f in os.scandir("textures\\") if f.is_dir()]
@@ -22,36 +28,39 @@ def main():
         except ValueError:
             print("Please use a number to select the wanted subfolder.")
         except IndexError:
-            print("The subfolder doesn't exist or you have mistyped the number.")          
+            print("The subfolder doesn't exist or you have mistyped the number.")
+    
+    # Generates a new random name for the ressource pack
+    new_pack_name = "resource_pack_" + str(random.randint(1,1000000))
+    
+    # Creates the new resource pack directory
+    new_directory = "new_resources\\" + new_pack_name + "\\assets\\minecraft\\textures\\block"
+    os.makedirs(new_directory)    
     
     # Creates a list of all the textures in the specified textures folder, without the blacklisted ones.
     textures_list = []
     with os.scandir(basepath) as entries:
         for entry in entries:
             if entry.is_file():
-                if entry.name in Blacklisted_blocks_textures:
-                    pass
-                if entry.name in Blacklisted_items_textures:
-                    pass
+                if entry.name in blacklist_list:
+                    blacklist_skip = shutil.copy(basepath + "\\" + entry.name, new_directory + "\\" + entry.name)
+                    continue
                 if entry.name.endswith(Blacklisted_file_type) == True:
-                    pass
+                    continue
                 else:
                     textures_list.append(entry.name)
-                    
-    # Generates a new random name for the ressource pack
-    new_pack_name = "resource_pack_" + str(random.randint(1,1000000))
-                    
+    
+    print(blacklist_list)
+
+    print(textures_list)
+    
     # Shuffle the textures in a new list
     new_textures_list = textures_list.copy()
     random.shuffle(new_textures_list)
 
-    # Creates the new resource pack directory
-    dirName = "new_resources\\" + new_pack_name + "\\assets\\minecraft\\textures\\block"
-    os.makedirs(dirName)
-
     # Creates the new resource pack by associting the blocks to their new textures
     for old,new in zip(textures_list,new_textures_list):
-        new_textures = shutil.copy(basepath+"\\"+old, dirName+"\\"+new)
+        new_textures = shutil.copy(basepath+"\\"+old, new_directory+"\\"+new)
     
     # Selector for the version of the resource pack, for the pack.mcmeta
     while True:
