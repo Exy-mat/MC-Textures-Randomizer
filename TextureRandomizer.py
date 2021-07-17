@@ -4,11 +4,11 @@ def main():
     # Blacklist for the file types.
     Blacklisted_file_type = ".mcmeta"
 
-    # Blacklist for the textures. Format : "block_texture_name.png". Commas in between block textures.
+    # Blacklist for the textures. Format : "texture_name.png". Commas in between textures.
     Blacklisted_blocks_textures = ["campfire_fire.png","fire_0.png","fire_1.png","kelp.png","kelp_plant.png"]
     Blacklisted_items_textures = []
     
-    #Selector for the subfolder of the textures to be randomized.
+    # Selector for the subfolder of the textures to be randomized.
     str_sub = ""
     subfolders = [f.path for f in os.scandir("textures\\") if f.is_dir()]
     for i in range(len(subfolders)):
@@ -22,7 +22,7 @@ def main():
         except ValueError: # If user doesn't use a number
             print("Please use a number to select the wanted subfolder.")
         except IndexError: # If user uses a bigger number than possible or a negative number
-            print("The subfolder doesn't exist or you have mistyped the number.")          
+            print("The subfolder doesn't exist or you have mistyped the number.")
     
     # Creates a list of all the textures in the specified textures folder, without the blacklisted ones.
     block_textures_list = []
