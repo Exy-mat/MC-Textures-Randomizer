@@ -1,0 +1,1 @@
+Put the textures FOLDERS here. DO NOT put the textures outside of a folder, might create a mess.
