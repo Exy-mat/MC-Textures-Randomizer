@@ -37,7 +37,7 @@ def main():
                     block_textures_list.append(entry.name)
                     
     # Generates a new random name for the ressource pack
-    new_pack_name = "ressources_pack_" + str(random.randint(1,1000000))
+    new_pack_name = "ressource_pack_" + str(random.randint(1,1000000))
                     
     # Shuffle the textures in a new list
     new_block_textures_list = block_textures_list.copy()
