@@ -2,28 +2,28 @@ import os, random, shutil, json
 
 def main():
     # Blacklist for the file types.
-    Blacklisted_file_type = [".mcmeta",".jpeg",".jpg",'.gif']
+    blacklisted_file_type = [".mcmeta",".jpeg",".jpg",'.gif']
 
     # Blacklist for the textures. Add texture to the blacklist in blacklist.txt.
     blacklist_file = open("blacklist.txt", "r")
-    blacklist_list = []
+    blacklist_textures_list = []
     
     for line in blacklist_file:
         stripped_line = line.strip()
-        blacklist_list.append(stripped_line)
+        blacklist_textures_list.append(stripped_line)
 
     blacklist_file.close()
 
     # Selector for the subfolder of the textures to be randomized.
-    str_sub = ""
-    subfolders = [f.path for f in os.scandir("textures\\") if f.is_dir()]
-    for i in range(len(subfolders)):
-        str_sub = str_sub + subfolders[i] + "[" + str(i) + "] "
+    subfolder_string_list = ""
+    subfolders_list = [f.path for f in os.scandir("textures\\") if f.is_dir()]
+    for i in range(len(subfolders_list)):
+        subfolder_string_list = subfolder_string_list + subfolders_list[i] + "[" + str(i) + "] "
     
     while True:
         try:
-            select_sub = int(input("Select the number of the texture subfolder you want to use (max "+ str(len(subfolders)-1) + "): " + str_sub +"\n"))
-            basepath = subfolders[select_sub]
+            select_sub = int(input("Select the number of the texture subfolder you want to use (max "+ str(len(subfolders_list)-1) + "): " + subfolder_string_list +"\n"))
+            basepath = subfolders_list[select_sub]
             break
         except ValueError:
             print("Please use a number to select the wanted subfolder.")
@@ -42,10 +42,10 @@ def main():
     with os.scandir(basepath) as entries:
         for entry in entries:
             if entry.is_file():
-                if entry.name in blacklist_list:
-                    blacklist_skip = shutil.copy(basepath + "\\" + entry.name, new_directory + "\\" + entry.name)
+                if entry.name in blacklist_textures_list:
+                    blacklist_textures = shutil.copy(basepath + "\\" + entry.name, new_directory + "\\" + entry.name)
                     continue
-                if entry.name.endswith(tuple(Blacklisted_file_type)) == True:
+                if entry.name.endswith(tuple(blacklisted_file_type)) == True:
                     blacklist_ends = shutil.copy(basepath + "\\" + entry.name, new_directory + "\\" + entry.name)
                     continue
                 else:
