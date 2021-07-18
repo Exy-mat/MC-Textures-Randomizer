@@ -39,19 +39,19 @@ def main():
 
     while True:
         try:
-            select_sub = int(input("Select the number of the texture subfolder you want to use (max "+ str(len(subfolders_list)-1) + "): " + subfolder_string_list +"\n"))
+            select_sub = int(input("Select the number of the texture subfolder you want to use (1-"+ str(len(subfolders_list)-1) + "): " + subfolder_string_list +"\n"))
             subfolder = subfolders_list[select_sub]
             if subfolder.startswith("textures\\block") == True:
                 if pack_version < 2:
-                    basepath = "textures\\blocks"
+                    basepath = "blocks"
                 else:
-                    basepath = "textures\\block"
+                    basepath = "block"
                 break
             if subfolder.startswith("textures\\item") == True:
                 if pack_version < 2:
-                    basepath = "textures\\items"
+                    basepath = "items"
                 else:
-                    basepath = "textures\\item"
+                    basepath = "item"
                 break
             else:
                 print("Invalid subfolder name. The subfolder name has to start with either 'blocks' (for blocks textures) or 'items' (for items textures)")
@@ -61,7 +61,7 @@ def main():
             print("The subfolder doesn't exist or you have mistyped the number.")
 
     # Creates the new resource pack directory
-    new_directory = "new_resources\\" + new_pack_name + "\\assets\\minecraft\\" + basepath
+    new_directory = "new_resources\\" + new_pack_name + "\\assets\\minecraft\\textures\\" + basepath
     os.makedirs(new_directory)
 
     # Creates a list of all the textures in the specified textures folder, without the blacklisted ones.
