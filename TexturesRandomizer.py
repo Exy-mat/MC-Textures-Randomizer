@@ -34,7 +34,7 @@ def main():
     new_pack_name = "resource_pack_" + str(random.randint(1,1000000))
     
     # Creates the new resource pack directory
-    new_directory = "new_resources\\" + new_pack_name + "\\assets\\minecraft\\textures\\block"
+    new_directory = "new_resources\\" + new_pack_name + "\\assets\\minecraft\\" + basepath
     os.makedirs(new_directory)    
     
     # Creates a list of all the textures in the specified textures folder, without the blacklisted ones.
@@ -45,7 +45,7 @@ def main():
                 if entry.name in blacklist_list:
                     blacklist_skip = shutil.copy(basepath + "\\" + entry.name, new_directory + "\\" + entry.name)
                     continue
-                if entry.name.endswith(".mcmeta"):
+                if entry.name.endswith(tuple(Blacklisted_file_type)) == True:
                     blacklist_ends = shutil.copy(basepath + "\\" + entry.name, new_directory + "\\" + entry.name)
                     continue
                 else:
