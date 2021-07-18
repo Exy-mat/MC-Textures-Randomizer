@@ -11,7 +11,7 @@ def main():
 
     blacklist_file.close()
 
-    # Generates a new random name for the ressource pack
+    # Generates a new random name for the resource pack
     new_pack_name = "resource_pack_" + str(random.randint(1,1000000))
 
     # Selector for the subfolder of the textures to be randomized.
