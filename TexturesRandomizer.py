@@ -43,9 +43,9 @@ def main():
             subfolder = subfolders_list[select_sub]
             if subfolder.startswith("textures\\block") == True:
                 if pack_version < 2:
-                    basepath = "textures\\block"
-                else:
                     basepath = "textures\\blocks"
+                else:
+                    basepath = "textures\\block"
                 break
             if subfolder.startswith("textures\\item") == True:
                 if pack_version < 2:
