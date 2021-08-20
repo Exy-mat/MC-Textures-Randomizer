@@ -1,4 +1,3 @@
-from hashlib import new
 import os, random, shutil, json
 
 # Blacklist for the textures. Add texture to the blacklist in blacklist.txt.
