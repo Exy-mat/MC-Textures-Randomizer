@@ -1,35 +1,64 @@
+from hashlib import new
 import os, random, shutil, json
 
+# Blacklist for the textures. Add texture to the blacklist in blacklist.txt.
+blacklist_file = open("blacklist.txt", "r")
+blacklist_textures_list = []
+
+for line in blacklist_file:
+    stripped_line = line.strip()
+    blacklist_textures_list.append(stripped_line)
+
+blacklist_file.close()
+
+# Generates a random resource pack name
+new_pack_name = "resource_pack_" + str(random.randint(1,1000000))
+
+# Creates the new resource pack directory
+new_directory = "new_resources\\" + new_pack_name
+os.makedirs(new_directory)
+
+# Selector for the version of the resource pack, for the pack.mcmeta
+while True:
+    try:
+        pack_version = int(input(
+            "Please select the version of the ressource pack (1-7):\n"
+            "Minecraft 1.6.1 - 1.8.9: [1]\n"
+            "Minecraft 1.9 - 1.10.2: [2]\n"
+            "Minecraft 1.11 - 1.12.2 : [3]\n"
+            "Minecraft 1.13 - 1.14.4 : [4]\n"
+            "Minecraft 1.15 - 1.16.1 : [5]\n"
+            "Minecraft 1.16.2 - 1.16.5 : [6]\n"
+            "Minecraft 1.17 : [7]\n"
+        ))
+        break
+    except ValueError:
+        print("Please use a number to select the resource pack version.")
+
+
+# Creates the correct pack.mcmeta and writes a fancy and distinghuised description
+description_text = "This is a randomly generated resource pack"
+random_description_text = ""
+hex_char = [1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f"]
+for i in range(len(description_text)):
+    random_description_text += "\u00A7"+ str(random.choice(hex_char)) + description_text[i] + "\u00A7r"
+
+pack_path = "new_resources\\"+ new_pack_name
+pack_name = "pack.mcmeta"
+completePath = os.path.join(pack_path,pack_name)
+pack_format = {
+    "pack": {
+    "pack_format": pack_version,
+    "description": random_description_text,
+    }
+}
+
+with open(completePath, "w") as pack_create:
+    json.dump(pack_format, pack_create, indent=2)
+
+# Main event
 def main():
-    # Blacklist for the textures. Add texture to the blacklist in blacklist.txt.
-    blacklist_file = open("blacklist.txt", "r")
-    blacklist_textures_list = []
-
-    for line in blacklist_file:
-        stripped_line = line.strip()
-        blacklist_textures_list.append(stripped_line)
-
-    blacklist_file.close()
-
-    # Generates a new random name for the resource pack
-    new_pack_name = "resource_pack_" + str(random.randint(1,1000000))
-
-    # Selector for the version of the resource pack, for the pack.mcmeta
-    while True:
-        try:
-            pack_version = int(input(
-                "Please select the version of the ressource pack (1-7):\n"
-                "Minecraft 1.6.1 - 1.8.9: [1]\n"
-                "Minecraft 1.9 - 1.10.2: [2]\n"
-                "Minecraft 1.11 - 1.12.2 : [3]\n"
-                "Minecraft 1.13 - 1.14.4 : [4]\n"
-                "Minecraft 1.15 - 1.16.1 : [5]\n"
-                "Minecraft 1.16.2 - 1.16.5 : [6]\n"
-                "Minecraft 1.17 : [7]\n"
-            ))
-            break
-        except ValueError:
-            print("Please use a number to select the resource pack version.")
+    global blacklist_textures_list, new_pack_name, pack_version, new_directory
 
     # Selector for the subfolder of the textures to be randomized.
     subfolder_string_list = ""
@@ -60,9 +89,9 @@ def main():
         except IndexError:
             print("The subfolder doesn't exist or you have mistyped the number.")
 
-    # Creates the new resource pack directory
-    new_directory = "new_resources\\" + new_pack_name + "\\assets\\minecraft\\textures\\" + basepath
-    os.makedirs(new_directory)
+    # Creates the new texture folder within the new resource pack
+    new_texture_folder = new_directory + "\\assets\\minecraft\\textures\\" + basepath
+    os.makedirs(new_texture_folder)
 
     # Creates a list of all the textures in the specified textures folder, without the blacklisted ones.
     textures_list = []
@@ -70,10 +99,10 @@ def main():
         for entry in entries:
             if entry.is_file():
                 if entry.name in blacklist_textures_list:
-                    blacklist_textures = shutil.copy(subfolder + "\\" + entry.name, new_directory + "\\" + entry.name)
+                    blacklist_textures = shutil.copy(subfolder + "\\" + entry.name, new_texture_folder + "\\" + entry.name)
                     continue
                 if entry.name.endswith(".png") != True:
-                    blacklist_ends = shutil.copy(subfolder + "\\" + entry.name, new_directory + "\\" + entry.name)
+                    blacklist_ends = shutil.copy(subfolder + "\\" + entry.name, new_texture_folder + "\\" + entry.name)
                     continue
                 else:
                     textures_list.append(entry.name)
@@ -82,33 +111,16 @@ def main():
     new_textures_list = textures_list.copy()
     random.shuffle(new_textures_list)
 
-    # Creates the new resource pack by associting the blocks to their new textures
+    # Creates the new textures folder within the new resource pack by associting the blocks textures to their new textures name
     for old,new in zip(textures_list,new_textures_list):
-        new_textures = shutil.copy(subfolder+"\\"+old, new_directory+"\\"+new)
+        new_textures = shutil.copy(subfolder+"\\"+old, new_texture_folder+"\\"+new)
 
-    # Adds the selected pack.mcmeta and the cool kid description
-    description_text = "This is a randomly generated resource pack"
-    random_description_text = ""
-    hex_char = [1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f"]
-    for i in range(len(description_text)):
-        random_description_text += "\u00A7"+ str(random.choice(hex_char)) + description_text[i] + "\u00A7r"
-
-    pack_path = "new_resources\\"+ new_pack_name
-    pack_name = "pack.mcmeta"
-    completePath = os.path.join(pack_path,pack_name)
-    pack_format = {
-        "pack": {
-        "pack_format": pack_version,
-        "description": random_description_text,
-        }
-    }
-
-    with open(completePath, "w") as pack_create:
-        json.dump(pack_format, pack_create, indent=2)
-
-    # Ending
-    print("Done, you can find your new resource pack : " + new_pack_name)
-    os.system('pause')
+    # Ending (or start-over)
+    print("Done! You can find your new resource pack at: " + "new_ressources" + new_pack_name + "\n" + "Or you can add a new folder to your resource pack!")
+    if str(input("Do you want to add a new texture folder ? Y for Yes, anything else to end. \n")) == "Y":
+        main()
+    else:
+        os.system('pause')
 
 if __name__ == "__main__":
     main()
