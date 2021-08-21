@@ -1,21 +1,22 @@
 import os, random, shutil, json
 
 # Blacklist for the textures. Add texture to the blacklist in blacklist.txt.
-blacklist_file = open("blacklist.txt", "r")
-blacklist_textures_list = []
+if os.path.isfile("blacklist.txt"):
+    blacklist_file = open("blacklist.txt", "r")
+    blacklist_textures_list = []
 
-for line in blacklist_file:
-    stripped_line = line.strip()
-    blacklist_textures_list.append(stripped_line)
+    for line in blacklist_file:
+        stripped_line = line.strip()
+        blacklist_textures_list.append(stripped_line)
 
-blacklist_file.close()
+    blacklist_file.close()
 
 # Generates a random resource pack name
 new_pack_name = "resource_pack_" + str(random.randint(1,1000000))
 
 # Creates the new resource pack directory
-new_directory = "new_resources\\" + new_pack_name
-os.makedirs(new_directory)
+new_resource_pack_folder = "resource_packs\\" + new_pack_name
+os.makedirs(new_resource_pack_folder)
 
 # Selector for the version of the resource pack, for the pack.mcmeta
 while True:
@@ -42,9 +43,8 @@ hex_char = [1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f"]
 for i in range(len(description_text)):
     random_description_text += "\u00A7"+ str(random.choice(hex_char)) + description_text[i] + "\u00A7r"
 
-pack_path = "new_resources\\"+ new_pack_name
 pack_name = "pack.mcmeta"
-completePath = os.path.join(pack_path,pack_name)
+completePath = os.path.join(new_resource_pack_folder,pack_name)
 pack_format = {
     "pack": {
     "pack_format": pack_version,
@@ -57,17 +57,16 @@ with open(completePath, "w") as pack_create:
 
 # Main event
 def main():
-    global blacklist_textures_list, new_pack_name, pack_version, new_directory
+    global blacklist_textures_list, new_pack_name, pack_version, new_resource_pack_folder
 
     # Selector for the subfolder of the textures to be randomized.
-    subfolder_string_list = ""
     subfolders_list = [f.path for f in os.scandir("textures\\") if f.is_dir()]
-    for i in range(len(subfolders_list)):
-        subfolder_string_list = subfolder_string_list + subfolders_list[i] + "[" + str(i) + "] "
 
     while True:
         try:
-            select_sub = int(input("Select the number of the texture subfolder you want to use (1-"+ str(len(subfolders_list)-1) + "): " + subfolder_string_list +"\n"))
+            print("Please select the subfolder to use :")
+            [print(subfolders_list[i] + ' [' + str(i) + ']') for i in range(len(subfolders_list))]
+            select_sub = int(input(""))
             subfolder = subfolders_list[select_sub]
             if subfolder.startswith("textures\\block") == True:
                 if pack_version < 2:
@@ -82,26 +81,26 @@ def main():
                     basepath = "item"
                 break
             else:
-                print("Invalid subfolder name. The subfolder name has to start with either 'blocks' (for blocks textures) or 'items' (for items textures)")
+                print("Invalid subfolder name. The subfolder name has to start with either 'block(s)' (for blocks textures) or 'item(s)' (for items textures)")
         except ValueError:
             print("Please use a number to select the subfolder.")
         except IndexError:
-            print("The subfolder doesn't exist or you have mistyped the number.")
+            print("The subfolder does not exist or you have mistyped the number.")
 
     # Creates the new texture folder within the new resource pack
-    new_texture_folder = new_directory + "\\assets\\minecraft\\textures\\" + basepath
-    os.makedirs(new_texture_folder)
+    new_resource_pack_folder = new_resource_pack_folder + "\\assets\\minecraft\\textures\\" + basepath
+    os.makedirs(new_resource_pack_folder)
 
-    # Creates a list of all the textures in the specified textures folder, without the blacklisted ones.
+    # Creates a list of all the textures in the specified textures folder, ignoring the blacklisted ones.
     textures_list = []
     with os.scandir(subfolder) as entries:
         for entry in entries:
             if entry.is_file():
                 if entry.name in blacklist_textures_list:
-                    blacklist_textures = shutil.copy(subfolder + "\\" + entry.name, new_texture_folder + "\\" + entry.name)
+                    blacklist_textures = shutil.copy(subfolder + "\\" + entry.name, new_resource_pack_folder + "\\" + entry.name)
                     continue
                 if entry.name.endswith(".png") != True:
-                    blacklist_ends = shutil.copy(subfolder + "\\" + entry.name, new_texture_folder + "\\" + entry.name)
+                    blacklist_ends = shutil.copy(subfolder + "\\" + entry.name, new_resource_pack_folder + "\\" + entry.name)
                     continue
                 else:
                     textures_list.append(entry.name)
@@ -110,13 +109,14 @@ def main():
     new_textures_list = textures_list.copy()
     random.shuffle(new_textures_list)
 
-    # Creates the new textures folder within the new resource pack by associting the blocks textures to their new textures name
+    # Associtiates the blocks textures to their new textures name
     for old,new in zip(textures_list,new_textures_list):
-        new_textures = shutil.copy(subfolder+"\\"+old, new_texture_folder+"\\"+new)
+        new_textures = shutil.copy(subfolder+"\\"+old, new_resource_pack_folder+"\\"+new)
 
-    # Ending (or start-over)
-    print("Done! You can find your new resource pack at: " + "new_ressources" + new_pack_name + "\n" + "Or you can add a new folder to your resource pack!")
-    if str(input("Do you want to add a new texture folder ? Y for Yes, anything else to end. \n")) == "Y":
+    # User prompt to end or start again
+    print("Done, your new resource pack is: " + new_pack_name + "\n")
+    repeat = str(input("Do you want to add a new folder to your resource pack? Y/y for Yes, anything else to end. \n"))
+    if repeat == "Y" or repeat == "y":
         main()
     else:
         os.system('pause')
