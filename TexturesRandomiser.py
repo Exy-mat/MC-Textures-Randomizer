@@ -1,5 +1,7 @@
 import os, random, shutil, json
 
+# Code created by @Exymat#0001 on Discord, source code available at https://github.com/Exymat/Minecraft_Resource_pack_randomiser
+
 # Blacklist for the textures. Add texture to the blacklist in blacklist.txt.
 if os.path.isfile("blacklist.txt"):
     blacklist_file = open("blacklist.txt", "r")
@@ -10,6 +12,8 @@ if os.path.isfile("blacklist.txt"):
         blacklist_textures_list.append(stripped_line)
 
     blacklist_file.close()
+else:
+    blacklist_file = open("blacklist.txt", "").close()
 
 # Generates a random resource pack name
 new_pack_name = "resource_pack_" + str(random.randint(1,1000000))
@@ -65,9 +69,8 @@ def main():
     while True:
         try:
             print("Please select the subfolder to use :")
-            [print(subfolders_list[i] + ' [' + str(i) + ']') for i in range(len(subfolders_list))]
-            select_sub = int(input(""))
-            subfolder = subfolders_list[select_sub]
+            print_list = [print(subfolders_list[i] + ': [' + str(i) + ']') for i in range(len(subfolders_list))]
+            subfolder = subfolders_list[int(input(""))]
             if subfolder.startswith("textures\\block") == True:
                 if pack_version < 2:
                     basepath = "blocks"
@@ -109,11 +112,11 @@ def main():
     new_textures_list = textures_list.copy()
     random.shuffle(new_textures_list)
 
-    # Associtiates the blocks textures to their new textures name
+    # Associates the textures to their new textures name
     for old,new in zip(textures_list,new_textures_list):
         new_textures = shutil.copy(subfolder+"\\"+old, new_resource_pack_folder+"\\"+new)
 
-    # User prompt to end or start again
+    # User prompt to end or start again with another folder
     print("Done, your new resource pack is: " + new_pack_name + "\n")
     repeat = str(input("Do you want to add a new folder to your resource pack? Y/y for Yes, anything else to end. \n"))
     if repeat == "Y" or repeat == "y":
