@@ -3,7 +3,7 @@ import os, random, shutil, json
 # Code created by @Exymat#0001 on Discord, source code available at https://github.com/Exymat/Minecraft_Resource_pack_randomiser
 
 # Blacklist for the textures. Add texture to the blacklist in blacklist.txt.
-if os.path.isfile("blacklist.txt"):
+if os.path.isfile("blacklist.txt") == True:
     blacklist_file = open("blacklist.txt", "r")
     blacklist_textures_list = []
 
@@ -12,8 +12,6 @@ if os.path.isfile("blacklist.txt"):
         blacklist_textures_list.append(stripped_line)
 
     blacklist_file.close()
-else:
-    blacklist_file = open("blacklist.txt", "").close()
 
 # Generates a random resource pack name
 new_pack_name = "resource_pack_" + str(random.randint(1,1000000))
@@ -27,15 +25,18 @@ while True:
     try:
         pack_version = int(input(
             "Please select the version of the ressource pack (1-7):\n"
-            "Minecraft 1.6.1 - 1.8.9: [1]\n"
-            "Minecraft 1.9 - 1.10.2: [2]\n"
-            "Minecraft 1.11 - 1.12.2 : [3]\n"
-            "Minecraft 1.13 - 1.14.4 : [4]\n"
-            "Minecraft 1.15 - 1.16.1 : [5]\n"
-            "Minecraft 1.16.2 - 1.16.5 : [6]\n"
-            "Minecraft 1.17 : [7]\n"
-        ))
-        break
+            " Minecraft 1.6.1 - 1.8.9: [1]\n"
+            " Minecraft 1.9 - 1.10.2: [2]\n"
+            " Minecraft 1.11 - 1.12.2 : [3]\n"
+            " Minecraft 1.13 - 1.14.4 : [4]\n"
+            " Minecraft 1.15 - 1.16.1 : [5]\n"
+            " Minecraft 1.16.2 - 1.16.5 : [6]\n"
+            " Minecraft 1.17 : [7]\n"
+            ))
+        if pack_version <= 7:
+            break
+        else:
+            print("Please use a number between 1 and 7 to select the resource pack version.")
     except ValueError:
         print("Please use a number to select the resource pack version.")
 
@@ -69,26 +70,32 @@ def main():
     while True:
         try:
             print("Please select the subfolder to use :")
-            print_list = [print(subfolders_list[i] + ': [' + str(i) + ']') for i in range(len(subfolders_list))]
+            print_list = [print(" "+subfolders_list[i] + ': [' + str(i) + ']') for i in range(len(subfolders_list))]
             subfolder = subfolders_list[int(input(""))]
-            if subfolder.startswith("textures\\block") == True:
-                if pack_version < 2:
+            break
+        except ValueError:
+            print("Please use a number to select the subfolder.")
+        except IndexError:
+            print("The subfolder does not exist or you have mistyped the number.")
+    while True:
+        try:
+            texture_type = int(input("Please select the textures type:\n Blocks : [0]\n Items : [1]\n"))
+            if texture_type == 0:
+                if pack_version < 1:
                     basepath = "blocks"
                 else:
                     basepath = "block"
                 break
-            if subfolder.startswith("textures\\item") == True:
-                if pack_version < 2:
+            if texture_type == 1:
+                if pack_version < 1:
                     basepath = "items"
                 else:
                     basepath = "item"
                 break
             else:
-                print("Invalid subfolder name. The subfolder name has to start with either 'block(s)' (for blocks textures) or 'item(s)' (for items textures)")
+                print("Texture type does not exist or you have mistyped the number.")
         except ValueError:
-            print("Please use a number to select the subfolder.")
-        except IndexError:
-            print("The subfolder does not exist or you have mistyped the number.")
+            print("Please use a number to select the texture type.")
 
     # Creates the new texture folder within the new resource pack
     new_resource_pack_folder = new_resource_pack_folder + "\\assets\\minecraft\\textures\\" + basepath
